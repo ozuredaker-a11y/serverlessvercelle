@@ -5,16 +5,21 @@
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/visit.php", "destination": "/api/index.php" },
-    { "source": "/(.*)", "destination": "/api/index.php" }
-  ],
-  "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate" }
-      ]
+      "source": "/visit.php",
+      "destination": "/api/visit.php"
+    },
+    {
+      "source": "/",
+      "destination": "/api/index.php"
+    },
+    {
+      "source": "/pages/(.*)",
+      "destination": "/api/index.php"
+    },
+    {
+      "source": "/panel/(.*)",
+      "destination": "/api/index.php"
     }
   ]
 }
