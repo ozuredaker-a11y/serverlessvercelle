@@ -21,13 +21,7 @@
     echo "</body></html>";
     exit;
     
-    // Original code below (commented out for testing)
-    /*
-	include "./libraries/geoplugin.class.php";
-	include "./libraries/UserInfo.php";
-    include "./antibots-debug/antibots.php";
-	include "./setting/config.php";
-	include "./setting/functions.php";
+    
 
 // function isBlocked($ip) {
     //     $blockedIPs = file_get_contents('./panel/actions/blocked_ips.txt');
