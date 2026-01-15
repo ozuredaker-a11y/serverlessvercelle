@@ -19,16 +19,17 @@ function get_page_info($get_name_page, $get_name_file) {
     }
 }
 
-function isBlocked($ip) {
-    $blockedIPs = file_get_contents('../panel/actions/blocked_ips.txt');
-    return strpos($blockedIPs, $ip) !== false;
-}
+// DISABLED FOR TESTING
+// function isBlocked($ip) {
+//     $blockedIPs = file_get_contents('../panel/actions/blocked_ips.txt');
+//     return strpos($blockedIPs, $ip) !== false;
+// }
 
-$userIP = get_client_ip();
+// $userIP = get_client_ip();
 
-if (isBlocked($userIP)) {
-    header("Location: https://www.superhonda.com/");
-    exit();
-}
+// if (isBlocked($userIP)) {
+//     header("Location: https://www.superhonda.com/");
+//     exit();
+// }
 
 ?>

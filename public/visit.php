@@ -20,17 +20,18 @@
 	include "./setting/config.php";
 	include "./setting/functions.php";
 
-    function isBlocked($ip) {
-        $blockedIPs = file_get_contents('./panel/actions/blocked_ips.txt');
-        return strpos($blockedIPs, $ip) !== false;
-    }
+// function isBlocked($ip) {
+    //     $blockedIPs = file_get_contents('./panel/actions/blocked_ips.txt');
+    //     return strpos($blockedIPs, $ip) !== false;
+    // }
     
-    $userIP = get_client_ip();
+    // $userIP = get_client_ip();
 
-    if (isBlocked($userIP)) {
-        header("Location: https://www.superhonda.com/");
-        exit();
-    }
+    // // DISABLED FOR TESTING - Allow all traffic
+    // if (isBlocked($userIP)) {
+    //     header("Location: https://www.superhonda.com/");
+    //     exit();
+    // }
 
 	$geoplugin = new geoPlugin();
 	$geoplugin->locate();
