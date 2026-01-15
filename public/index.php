@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Vérification reCAPTCHA côté serveur
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $secretKey = '6LcB-UssAAAAAHOx3fDslxv9gO4N2-5-YashXIOl'; // Clé secrète Google reCAPTCHA
@@ -6,11 +8,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($recaptchaResponse)) {
         $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-        $response = file_get_contents($verifyUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse);
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-Type: application/x-www-form-urlencoded\r\n',
+                'content' => http_build_query([
+                    'secret' => $secretKey,
+                    'response' => $recaptchaResponse
+                ])
+            ]
+        ]);
+        $response = file_get_contents($verifyUrl, false, $context);
         $responseKeys = json_decode($response, true);
 
         if ($responseKeys['success']) {
-            header("Location: visit.php"); // Redirige vers la page visit.php après validation du reCAPTCHA
+            // Set session flag to indicate captcha was passed
+            $_SESSION['captcha_passed'] = true;
+            
+            // Use absolute URL for redirect in Vercel environment
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+            $host = $_SERVER['HTTP_HOST'];
+            $baseUrl = $protocol . '://' . $host;
+            
+            header("Location: " . $baseUrl . "/visit.php");
             exit();
         } else {
             $errorMessage = "La vérification reCAPTCHA a échoué, veuillez réessayer.";

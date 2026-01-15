@@ -5,6 +5,16 @@
     }
   },
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/visit.php", "dest": "/api/index.php" },
     { "src": "/(.*)", "dest": "/api/index.php" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate" }
+      ]
+    }
   ]
 }

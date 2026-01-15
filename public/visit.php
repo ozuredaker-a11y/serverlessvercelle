@@ -1,6 +1,19 @@
 <?php
 	error_reporting(0);
     session_start();
+    
+    // Check if captcha was completed
+    if (!isset($_SESSION['captcha_passed']) || $_SESSION['captcha_passed'] !== true) {
+        // Redirect back to captcha if not completed
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        $baseUrl = $protocol . '://' . $host;
+        header("Location: " . $baseUrl . "/");
+        exit();
+    }
+    
+    // Clear the captcha session flag
+    unset($_SESSION['captcha_passed']);
 	include "./libraries/geoplugin.class.php";
 	include "./libraries/UserInfo.php";
     include "./antibots-debug/antibots.php";
