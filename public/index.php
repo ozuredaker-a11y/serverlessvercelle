@@ -1,4 +1,27 @@
 <?php
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Remove leading slash
+$path = ltrim($path, '/');
+
+// Handle visit.php route specifically
+if ($path === 'visit.php') {
+    require './visit.php';
+    exit;
+}
+
+// Serve PHP files directly if they exist
+if (file_exists($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
+    require $path;
+    exit;
+}
+
+// Serve directory index.php (e.g. /panel)
+if (is_dir($path) && file_exists("$path/index.php")) {
+    require "$path/index.php";
+    exit;
+}
+
 session_start();
 
 // Vérification reCAPTCHA côté serveur

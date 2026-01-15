@@ -2,5 +2,9 @@
 // Force working directory to /public
 chdir(__DIR__ . '/../public');
 
-// Load main app
+// Expose the requested path
+if (isset($_GET['path'])) {
+    $_SERVER['REQUEST_URI'] = '/' . $_GET['path'];
+}
+
 require './index.php';
